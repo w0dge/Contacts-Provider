@@ -7,20 +7,26 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 private const val TAG = "MainActivity"
+private const val REQUEST_CODE_READ_CONTACTS = 1
 
 class MainActivity : AppCompatActivity() {
 
+    private var readGranted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        fab.setOnClickListener { view ->
+        val hasReadContactPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
+        Log.d(TAG, "onCreate: checkSelfPermission returned $hasReadContactPermission")
+
+        fab.setOnClickListener {
             Log.d(TAG, "fab onClick: starts")
             val projection = arrayOf(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY)
 
